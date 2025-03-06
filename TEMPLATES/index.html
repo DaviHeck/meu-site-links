@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Sites</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+        a { text-decoration: none; color: #007BFF; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Gerenciador de Sites</h1>
+    <ul>
+        <li><a href="{{ url_for('adicionar_documento') }}">Adicionar Novo Site</a></li>
+        <li><a href="{{ url_for('listar_documentos') }}">Listar Todos os Sites</a></li>
+        <li><a href="{{ url_for('buscar_documento') }}">Buscar Site por Nome</a></li>
+    </ul>
+</body>
+</html>

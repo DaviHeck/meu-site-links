@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Sites</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 15px 0; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        a { color: #007BFF; }
+    </style>
+</head>
+<body>
+    <h1>Lista de Sites Cadastrados</h1>
+    {% if documentos|length > 0 %}
+        <ul>
+            {% for doc in documentos %}
+                <li>
+                    <strong>Tipo:</strong> {{ doc.tipo }}<br>
+                    <strong>Nível:</strong> {{ doc.nivel }}<br>
+                    {% if doc.nivel == "Municipal" %}
+                        <strong>Cidade:</strong> {{ doc.cidade|default('N/A') }}<br>
+                        <strong>Estado:</strong> {{ doc.estado|default('N/A') }}<br>
+                    {% elif doc.nivel == "Estadual" %}
+                        <strong>Estado:</strong> {{ doc.estado|default('N/A') }}<br>
+                    {% endif %}
+                    <strong>Nome:</strong> {{ doc.nome }}<br>
+                    <strong>URL:</strong> <a href="{{ doc.url }}" target="_blank">{{ doc.url }}</a><br>
+                    <strong>Data de Cadastro:</strong> {{ doc.data_cadastro }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhum site cadastrado.</p>
+    {% endif %}
+    <p><a href="{{ url_for('index') }}">Voltar</a></p>
+</body>
+</html>

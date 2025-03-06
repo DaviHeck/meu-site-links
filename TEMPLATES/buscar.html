@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Site</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin: 10px 0 5px; }
+        input, select { width: 100%; max-width: 300px; padding: 5px; }
+        button { margin-top: 10px; padding: 5px 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 15px 0; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        a { color: #007BFF; }
+    </style>
+</head>
+<body>
+    <h1>Buscar Site por Nome</h1>
+    <form method="POST">
+        <label>Termo de Busca:</label>
+        <input type="text" name="busca" required>
+        
+        <label>Finalidade:</label>
+        <select name="finalidade" required>
+            <option value="emissão">Emissão</option>
+            <option value="conferência">Conferência</option>
+        </select>
+        
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if encontrados is not none %}
+        <h2>Resultados da Busca ({{ finalidade }})</h2>
+        {% if encontrados|length > 0 %}
+            <ul>
+                {% for doc in encontrados %}
+                    <li>
+                        <strong>Tipo:</strong> {{ doc.tipo }}<br>
+                        <strong>Nível:</strong> {{ doc.nivel }}<br>
+                        {% if doc.nivel == "Municipal" %}
+                            <strong>Cidade:</strong> {{ doc.cidade|default('N/A') }}<br>
+                            <strong>Estado:</strong> {{ doc.estado|default('N/A') }}<br>
+                        {% elif doc.nivel == "Estadual" %}
+                            <strong>Estado:</strong> {{ doc.estado|default('N/A') }}<br>
+                        {% endif %}
+                        <strong>Nome:</strong> {{ doc.nome }}<br>
+                        <strong>URL:</strong> <a href="{{ doc.url }}" target="_blank">{{ doc.url }}</a><br>
+                        <strong>Data de Cadastro:</strong> {{ doc.data_cadastro }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nenhum site encontrado para o termo digitado.</p>
+        {% endif %}
+    {% endif %}
+    <p><a href="{{ url_for('index') }}">Voltar</a></p>
+</body>
+</html>

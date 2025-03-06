@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Novo Site</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin: 10px 0 5px; }
+        input, select { width: 100%; max-width: 300px; padding: 5px; }
+        button { margin-top: 10px; padding: 5px 10px; }
+        a { color: #007BFF; }
+    </style>
+</head>
+<body>
+    <h1>Adicionar Novo Site</h1>
+    <form method="POST">
+        <label>Tipo de Documento:</label>
+        <input type="text" name="tipo_doc" required>
+        
+        <label>Nível:</label>
+        <select name="nivel" required>
+            <option value="Municipal">Municipal</option>
+            <option value="Estadual">Estadual</option>
+            <option value="Federal">Federal</option>
+        </select>
+        
+        <label>Cidade (se Municipal):</label>
+        <input type="text" name="cidade">
+        
+        <label>Estado (se Municipal ou Estadual):</label>
+        <input type="text" name="estado">
+        
+        <label>Nome Descritivo:</label>
+        <input type="text" name="nome" required>
+        
+        <label>URL:</label>
+        <input type="text" name="url" required>
+        
+        <button type="submit">Adicionar</button>
+    </form>
+    <p><a href="{{ url_for('index') }}">Voltar</a></p>
+</body>
+</html>
