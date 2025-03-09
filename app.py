@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import json
 import os
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "sua_chave_secreta_aqui"  # Necessário para usar flash messages
 
 # Nome do arquivo onde os dados serão armazenados
 ARQUIVO_DADOS = "documentos_sites.json"
@@ -33,10 +34,17 @@ def adicionar_documento():
         tipo_doc = request.form['tipo_doc']
         nivel = request.form['nivel'].capitalize()
         nome = request.form['nome']
-        url = request.form['url']
+        url = request.form['url'].strip()  # Remove espaços extras da URL
         
+        # Verifica se a URL já existe
+        for doc in dados["documentos"]:
+            if doc["url"] == url:
+                flash("Erro: Esta URL já foi cadastrada!", "error")
+                return redirect(url_for('adicionar_documento'))
+
         if nivel not in ["Municipal", "Estadual", "Federal"]:
-            return "Nível inválido! Use Municipal, Estadual ou Federal.", 400
+            flash("Nível inválido! Use Municipal, Estadual ou Federal.", "error")
+            return redirect(url_for('adicionar_documento'))
 
         novo_documento = {
             "tipo": tipo_doc,
@@ -53,6 +61,7 @@ def adicionar_documento():
         
         dados["documentos"].append(novo_documento)
         salvar_documentos(dados)
+        flash("Link adicionado com sucesso!", "success")
         return redirect(url_for('listar_documentos'))
     return render_template('adicionar.html')
 
@@ -82,5 +91,4 @@ def buscar_documento():
 
 # Executa a aplicação
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
-    
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
